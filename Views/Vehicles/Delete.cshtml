@@ -1,0 +1,25 @@
+@model Vehicle
+@{
+    ViewData["Title"] = "Delete vehicle";
+}
+
+<div class="alert alert-warning">
+    <h5 class="fw-bold">Confirm deletion</h5>
+    <p>Are you sure you want to remove <strong>@Model.Name</strong>?</p>
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Brand</dt>
+    <dd class="col-sm-9">@Model.Brand</dd>
+    <dt class="col-sm-3">Type</dt>
+    <dd class="col-sm-9">@Model.Type</dd>
+    <dt class="col-sm-3">Price/hr</dt>
+    <dd class="col-sm-9">@Model.PricePerHour TND</dd>
+</dl>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+</form>
+

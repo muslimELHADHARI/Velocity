@@ -1,0 +1,44 @@
+@model VehicleFormViewModel
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Brand" class="form-label"></label>
+        <input asp-for="Brand" class="form-control" />
+        <span asp-validation-for="Brand" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Type" class="form-label"></label>
+        <select asp-for="Type" class="form-select" asp-items="Html.GetEnumSelectList<VehicleType>()"></select>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="AvailabilityStatus" class="form-label"></label>
+        <select asp-for="AvailabilityStatus" class="form-select" asp-items="Html.GetEnumSelectList<AvailabilityStatus>()"></select>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="EngineSize" class="form-label"></label>
+        <input asp-for="EngineSize" class="form-control" />
+        <span class="form-text">Leave empty for bicycles</span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="PricePerHour" class="form-label">Price per hour (TND)</label>
+        <input asp-for="PricePerHour" class="form-control" />
+        <span asp-validation-for="PricePerHour" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <label asp-for="ImageUrl" class="form-label">Image URL (e.g., /images/bike1.jpg)</label>
+        <input asp-for="ImageUrl" class="form-control" placeholder="/images/vehicle-name.jpg" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        <span class="form-text">Place images in wwwroot/images folder</span>
+    </div>
+</div>
+

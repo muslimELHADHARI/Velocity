@@ -1,0 +1,88 @@
+@model ReservationCreateViewModel
+@{
+    ViewData["Title"] = "Reserve";
+}
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card-modern">
+            <h3 class="fw-bold mb-4 text-gradient">
+                <i class="bi bi-calendar-check me-2"></i>Reserve @Model.VehicleName
+            </h3>
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="VehicleId" />
+                <div class="form-group-floating mb-4">
+                    <input asp-for="StartDateTime" class="form-control" type="datetime-local" value="@Model.StartDateTime.ToString("yyyy-MM-ddTHH:mm")" />
+                    <label asp-for="StartDateTime">Start date & time</label>
+                    <span asp-validation-for="StartDateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group-floating mb-4">
+                    <input asp-for="DurationHours" class="form-control" type="number" min="1" step="1" />
+                    <label asp-for="DurationHours">Duration (hours)</label>
+                    <span asp-validation-for="DurationHours" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold mb-3">Payment method</label>
+                    <div class="d-flex flex-column gap-3">
+                        <label class="payment-option" for="paymentOnline">
+                            <input class="payment-radio" type="radio" asp-for="PaymentMethod" value="@PaymentMethod.Online" checked id="paymentOnline" />
+                            <div class="payment-option-content">
+                                <div class="payment-option-header">
+                                    <div class="payment-icon">
+                                        <i class="bi bi-credit-card"></i>
+                                    </div>
+                                    <div class="payment-text">
+                                        <div class="fw-semibold">Online payment</div>
+                                        <small class="text-muted">Pay securely with your card</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="payment-option" for="paymentSite">
+                            <input class="payment-radio" type="radio" asp-for="PaymentMethod" value="@PaymentMethod.PayOnSite" id="paymentSite" />
+                            <div class="payment-option-content">
+                                <div class="payment-option-header">
+                                    <div class="payment-icon">
+                                        <i class="bi bi-cash-coin"></i>
+                                    </div>
+                                    <div class="payment-text">
+                                        <div class="fw-semibold">Pay on site</div>
+                                        <small class="text-muted">Pay when you pick up the vehicle</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary-gradient w-100 btn-lg">
+                    <span>Proceed to checkout</span>
+                    <i class="bi bi-arrow-right ms-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card-modern">
+            <p class="text-uppercase text-muted small mb-2 fw-semibold">Vehicle Details</p>
+            <h5 class="fw-bold mb-3">@Model.VehicleName</h5>
+            <p class="text-muted mb-3">
+                <i class="bi bi-tag me-1"></i>@Model.VehicleBrand • @Model.VehicleType
+            </p>
+            <div class="p-3 rounded-3 mb-4" style="background: var(--gradient-card); border: 1px solid var(--border-color);">
+                <p class="text-muted small mb-1">Price per hour</p>
+                <div class="fw-bold text-gradient" style="font-size: 1.75rem;">@Model.PricePerHour TND</div>
+            </div>
+            <div class="alert alert-info d-flex align-items-start">
+                <i class="bi bi-info-circle-fill me-2 mt-1"></i>
+                <div>
+                    <strong>Important:</strong> No overlapping reservations allowed. Your time slot will be validated against existing bookings.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+

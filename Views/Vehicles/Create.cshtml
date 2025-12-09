@@ -1,0 +1,21 @@
+@model VehicleFormViewModel
+@{
+    ViewData["Title"] = "Add vehicle";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold">Add vehicle</h2>
+    <a class="btn btn-outline-secondary" asp-action="Index">Back</a>
+</div>
+
+<form asp-action="Create" method="post">
+    <partial name="_VehicleForm" model="Model" />
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary-gradient">Save</button>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+

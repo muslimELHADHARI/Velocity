@@ -1,0 +1,76 @@
+@model VehicleListViewModel
+@{
+    ViewData["Title"] = "Vehicles";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <p class="text-uppercase text-muted small mb-1 fw-semibold">Our Fleet</p>
+        <h2 class="fw-bold text-gradient">Bikes & Motors</h2>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary-gradient" asp-action="Create">
+            <i class="bi bi-plus-lg me-1"></i>Add Vehicle
+        </a>
+    }
+</div>
+
+<form class="row g-3 align-items-end mb-4" method="get">
+    <div class="col-md-4">
+        <label class="form-label">Search</label>
+        <input type="text" name="search" value="@Model.Search" class="form-control" placeholder="Name or brand" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Type</label>
+        <select name="type" class="form-select">
+            <option value="">Any</option>
+            <option value="@VehicleType.Bicycle" selected="@(Model.Type == VehicleType.Bicycle)">Bicycle</option>
+            <option value="@VehicleType.Motorcycle" selected="@(Model.Type == VehicleType.Motorcycle)">Motorcycle</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Brand</label>
+        <input type="text" name="brand" value="@Model.Brand" class="form-control" />
+    </div>
+    <div class="col-md-2 d-grid">
+        <button class="btn btn-primary-gradient" type="submit">
+            <i class="bi bi-funnel me-1"></i>Apply
+        </button>
+    </div>
+</form>
+
+<div class="row g-4">
+    @foreach (var vehicle in Model.Vehicles)
+    {
+        <div class="col-md-4">
+            <div class="vehicle-card h-100">
+                <div class="card-img-top placeholder-glow bg-body-secondary" style="height:250px; background-image:url('@vehicle.ImageUrl'); background-size:cover; background-position:center;"></div>
+                <div class="vehicle-card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge px-3 py-2" style="background: var(--gradient-primary); color: white; border-radius: 20px;">@vehicle.Type</span>
+                        <small class="text-muted">@vehicle.Brand</small>
+                    </div>
+                    <h5 class="fw-bold mb-3">@vehicle.Name</h5>
+                    <p class="text-muted flex-grow-1 mb-4">@vehicle.Description</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-gradient" style="font-size: 1.5rem;">@vehicle.PricePerHour TND<small class="text-muted">/hr</small></span>
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-primary-gradient btn-sm" asp-action="Details" asp-route-id="@vehicle.Id">
+                                <span>Details</span>
+                                <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-sm" style="background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary);" asp-action="Edit" asp-route-id="@vehicle.Id">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

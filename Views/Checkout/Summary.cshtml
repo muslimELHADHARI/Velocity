@@ -1,0 +1,102 @@
+@model CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+    var isPaid = Model.PaymentStatus == PaymentStatus.Paid;
+}
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card-modern">
+            <h3 class="fw-bold mb-4 text-gradient">
+                <i class="bi bi-receipt me-2"></i>Reservation Summary
+            </h3>
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="fw-bold mb-2">@Model.VehicleName</h5>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-tag me-1"></i>@Model.VehicleType
+                        </p>
+                    </div>
+                    <span class="badge px-3 py-2" style="background: var(--gradient-primary); color: white; border-radius: 20px;">@Model.PaymentStatus</span>
+                </div>
+            </div>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3" style="background: var(--gradient-card); border: 1px solid var(--border-color);">
+                        <p class="text-muted small mb-1">Start</p>
+                        <h6 class="fw-bold mb-0">@Model.StartDateTime.ToLocalTime().ToString("MMM dd, yyyy")</h6>
+                        <small class="text-muted">@Model.StartDateTime.ToLocalTime().ToString("HH:mm")</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3" style="background: var(--gradient-card); border: 1px solid var(--border-color);">
+                        <p class="text-muted small mb-1">End</p>
+                        <h6 class="fw-bold mb-0">@Model.EndDateTime.ToLocalTime().ToString("MMM dd, yyyy")</h6>
+                        <small class="text-muted">@Model.EndDateTime.ToLocalTime().ToString("HH:mm")</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3" style="background: var(--gradient-card); border: 1px solid var(--border-color);">
+                        <p class="text-muted small mb-1">Duration</p>
+                        <h6 class="fw-bold mb-0">@Model.DurationHours <small class="text-muted">hours</small></h6>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: var(--border-color);" />
+            <div class="d-flex justify-content-between align-items-center pt-3">
+                <p class="mb-0 fw-semibold" style="font-size: 1.125rem;">Total Amount</p>
+                <h4 class="fw-bold mb-0 text-gradient" style="font-size: 2rem;">@Model.TotalAmount TND</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card-modern mb-3">
+            <h5 class="fw-bold mb-4 text-gradient">
+                <i class="bi bi-credit-card me-2"></i>Payment
+            </h5>
+            @if (isPaid)
+            {
+                <div class="alert alert-success d-flex align-items-start">
+                    <i class="bi bi-check-circle-fill me-2 mt-1"></i>
+                    <div>
+                        <strong>Payment completed!</strong>
+                        <div class="small">Reference: @Model.PaymentStatus</div>
+                    </div>
+                </div>
+            }
+            else if (Model.PaymentMethod == PaymentMethod.PayOnSite)
+            {
+                <div class="alert alert-info d-flex align-items-start">
+                    <i class="bi bi-info-circle-fill me-2 mt-1"></i>
+                    <div>Pay on site selected. You can still pay online now.</div>
+                </div>
+            }
+            <form asp-action="PayOnline" method="post" class="mb-3">
+                <input type="hidden" name="id" value="@Model.ReservationId" />
+                <div class="form-group-floating mb-3">
+                    <input name="cardHolder" class="form-control" placeholder="" required />
+                    <label>Card holder</label>
+                </div>
+                <div class="form-group-floating mb-4">
+                    <input name="cardNumber" class="form-control" placeholder="" required />
+                    <label>Card number</label>
+                </div>
+                <button type="submit" class="btn btn-primary-gradient w-100 btn-lg" @(isPaid ? "disabled" : "")>
+                    <span>Pay online</span>
+                    <i class="bi bi-credit-card ms-2"></i>
+                </button>
+            </form>
+            <form asp-action="PayOnSite" method="post">
+                <input type="hidden" name="id" value="@Model.ReservationId" />
+                <button type="submit" class="btn w-100" style="background: var(--bg-secondary); border: 2px solid var(--border-color); color: var(--text-primary);" @(isPaid ? "disabled" : "")>
+                    <i class="bi bi-cash-coin me-2"></i>Keep pay-on-site
+                </button>
+            </form>
+        </div>
+        <a class="btn btn-primary-gradient w-100 btn-lg" asp-controller="Reservations" asp-action="My">
+            <i class="bi bi-arrow-left me-2"></i>Back to my reservations
+        </a>
+    </div>
+</div>
+

@@ -1,0 +1,63 @@
+@model Vehicle
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="row gy-4 align-items-center">
+    <div class="col-lg-6">
+        <div class="vehicle-card" style="border-radius: var(--border-radius-lg); overflow: hidden;">
+            <div style="height:400px; background-image:url('@(Model.ImageUrl ?? "/images/placeholder.jpg")'); background-size:cover; background-position:center; background-color: var(--bg-secondary);"></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+            <span class="badge px-3 py-2" style="background: var(--gradient-primary); color: white; border-radius: 20px;">
+                <i class="bi bi-@(Model.Type == VehicleType.Bicycle ? "bicycle" : "speedometer2") me-1"></i>@Model.Type
+            </span>
+            <small class="text-muted">
+                <i class="bi bi-tag me-1"></i>@Model.Brand
+            </small>
+        </div>
+        <h1 class="fw-bold text-gradient mb-3">@Model.Name</h1>
+        <p class="text-muted mb-4" style="font-size: 1.125rem; line-height: 1.8;">@Model.Description</p>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="p-3 rounded-3" style="background: var(--gradient-card); border: 1px solid var(--border-color);">
+                    <p class="text-muted small mb-1">Price per hour</p>
+                    <h4 class="fw-bold text-gradient mb-0">@Model.PricePerHour TND</h4>
+                </div>
+            </div>
+            @if (Model.EngineSize.HasValue)
+            {
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3" style="background: var(--gradient-card); border: 1px solid var(--border-color);">
+                        <p class="text-muted small mb-1">Engine</p>
+                        <h5 class="fw-bold mb-0">@Model.EngineSize cc</h5>
+                    </div>
+                </div>
+            }
+            <div class="col-md-4">
+                <div class="p-3 rounded-3" style="background: var(--gradient-card); border: 1px solid var(--border-color);">
+                    <p class="text-muted small mb-1">Status</p>
+                    <span class="badge px-3 py-2 d-inline-block" style="background: var(--gradient-primary); color: white; border-radius: 20px;">@Model.AvailabilityStatus</span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary-gradient btn-lg flex-grow-1 flex-md-grow-0" asp-controller="Reservations" asp-action="Create" asp-route-vehicleId="@Model.Id">
+                <span>Reserve now</span>
+                <i class="bi bi-calendar-check ms-2"></i>
+            </a>
+            <a class="btn btn-primary-gradient btn-lg flex-grow-1 flex-md-grow-0" asp-action="Index">
+                <i class="bi bi-arrow-left me-2"></i>Back to list
+            </a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-outline-primary flex-grow-1 flex-md-grow-0" asp-action="Edit" asp-route-id="@Model.Id">
+                    <i class="bi bi-pencil me-2"></i>Edit
+                </a>
+            }
+        </div>
+    </div>
+</div>
+

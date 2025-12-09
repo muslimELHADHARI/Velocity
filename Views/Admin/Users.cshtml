@@ -1,0 +1,93 @@
+@model IEnumerable<ManageUserViewModel>
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+    <div>
+        <h2 class="fw-bold text-gradient mb-1">
+            <i class="bi bi-people me-2"></i>Manage Users
+        </h2>
+        <p class="text-muted mb-0">View and manage user accounts</p>
+    </div>
+    <a class="btn btn-primary-gradient" asp-action="Index">
+        <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+    </a>
+</div>
+
+<div class="card-modern">
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-people" style="font-size: 4rem; color: var(--text-muted); opacity: 0.5;"></i>
+            <h5 class="mt-3 text-muted">No users found</h5>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Contact</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        var displayName = user.Email.Contains("@") ? user.Email.Split('@')[0] : user.Email;
+                        displayName = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(displayName);
+                        
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@displayName</div>
+                                <small class="text-muted">@user.Email</small>
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(user.PhoneNumber))
+                                {
+                                    <span><i class="bi bi-telephone me-1"></i>@user.PhoneNumber</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No phone</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="badge px-3 py-2" style="background: @(user.Role == "Admin" ? "var(--gradient-primary)" : "var(--gradient-secondary)"); color: white; border-radius: 20px;">
+                                    <i class="bi bi-@(user.Role == "Admin" ? "shield-check" : "person") me-1"></i>@user.Role
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge px-3 py-2" style="background: @(user.IsActive ? "var(--gradient-primary)" : "#999"); color: white; border-radius: 20px;">
+                                    @(user.IsActive ? "Active" : "Inactive")
+                                </span>
+                            </td>
+                            <td>
+                                <form asp-action="UpdateUser" method="post" class="d-flex flex-column flex-md-row gap-2 align-items-start align-items-md-center">
+                                    <input type="hidden" name="userId" value="@user.Id" />
+                                    <select name="role" class="form-select form-select-sm" style="min-width:140px;">
+                                        <option value="Customer" selected="@(user.Role=="Customer")">Customer</option>
+                                        <option value="Admin" selected="@(user.Role=="Admin")">Admin</option>
+                                    </select>
+                                    <div class="form-check form-switch d-flex align-items-center">
+                                        <input class="form-check-input me-2" type="checkbox" name="isActive" value="true" id="active_@user.Id" @(user.IsActive ? "checked" : "") />
+                                        <label class="form-check-label small text-muted" for="active_@user.Id">Active</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary-gradient btn-sm">
+                                        <i class="bi bi-save me-1"></i>Save
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+

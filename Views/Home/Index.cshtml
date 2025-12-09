@@ -1,0 +1,120 @@
+﻿@model VehicleListViewModel
+@{
+    ViewData["Title"] = "Velocity Rentals";
+}
+
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 hero-content">
+                <span class="badge mb-3 text-uppercase fw-semibold px-3 py-2" style="background: rgba(255,255,255,0.2); color: white; border-radius: 20px;">Bikes & Motors</span>
+                <h1 class="hero-title">Ride Fast. Ride Free. <span class="text-white">Velocity</span></h1>
+                <p class="hero-subtitle">Premium bicycles and motorcycles with flexible hourly rentals, secure checkout, and instant confirmation.</p>
+                <div class="d-flex gap-3 mt-4 flex-wrap">
+                    <a class="btn btn-primary-gradient btn-lg shadow-gradient" asp-controller="Vehicles" asp-action="Index">
+                        <span>Browse Fleet</span>
+                        <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                    <a class="btn btn-lg" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3);" asp-controller="Reservations" asp-action="My">
+                        <i class="bi bi-calendar-check me-2"></i>My Reservations
+                    </a>
+                </div>
+                <div class="d-flex gap-4 mt-4 text-white" style="opacity: 0.9;">
+                    <div><i class="bi bi-shield-lock-fill me-2"></i>Secure</div>
+                    <div><i class="bi bi-lightning-charge-fill me-2"></i>Instant pickup</div>
+                    <div><i class="bi bi-people-fill me-2"></i>Admin & Customer roles</div>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center mt-5 mt-lg-0">
+                <div class="card-modern" style="background: rgba(255,255,255,0.95);">
+                    <p class="text-uppercase fw-semibold text-gradient mb-3">Trending Rides</p>
+                    <div class="row g-3">
+                        @foreach (var vehicle in Model.Vehicles)
+                        {
+                            <div class="col-12">
+                                <div class="p-3 rounded-3" style="background: var(--gradient-card); border: 1px solid var(--border-color); transition: all 0.3s;">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="mb-1 fw-semibold">@vehicle.Name</p>
+                                            <small class="text-muted">@vehicle.Brand • @vehicle.Type</small>
+                                        </div>
+                                        <span class="badge px-3 py-2" style="background: var(--gradient-primary); color: white; border-radius: 20px;">@vehicle.PricePerHour TND/hr</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <p class="text-uppercase text-muted fw-semibold small mb-1">Discover</p>
+            <h2 class="fw-bold text-gradient">Featured Vehicles</h2>
+        </div>
+        <a class="btn btn-primary-gradient btn-sm" asp-controller="Vehicles" asp-action="Index">
+            <span>View All</span>
+            <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+    <div class="row g-4">
+        @foreach (var vehicle in Model.Vehicles.Take(3))
+        {
+            <div class="col-md-4">
+                <div class="card-modern h-100 hover-lift">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <span class="badge px-3 py-2" style="background: var(--gradient-primary); color: white; border-radius: 20px;">@vehicle.Type</span>
+                        <small class="text-muted">@vehicle.Brand</small>
+                    </div>
+                    <h5 class="fw-bold mb-3">@vehicle.Name</h5>
+                    <p class="text-muted flex-grow-1 mb-4">@vehicle.Description</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="fw-bold text-gradient" style="font-size: 1.5rem;">@vehicle.PricePerHour TND <small class="text-muted">/hr</small></div>
+                        <a class="btn btn-primary-gradient btn-sm" asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id">
+                            <span>View</span>
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<section class="py-5" style="background: var(--gradient-card); border-radius: var(--border-radius-lg); margin: 2rem 0;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card-modern h-100 text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-funnel-fill" style="font-size: 3rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Smart Filters</h5>
+                    <p class="text-muted">Search by brand, type, and price with instant feedback.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-modern h-100 text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-credit-card-fill" style="font-size: 3rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Flexible Payments</h5>
+                    <p class="text-muted">Choose online checkout or pay on site with status tracking.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-modern h-100 text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check-fill" style="font-size: 3rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Admin-Ready</h5>
+                    <p class="text-muted">Role-based dashboard, user management, vehicles CRUD, and reservations oversight.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

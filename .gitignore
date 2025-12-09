@@ -1,0 +1,53 @@
+# .NET build outputs
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.userosscache
+*.sln.docstates
+
+# IDE/Editor/Tool settings
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Secrets
+secrets.json
+appsettings.Development.json
+/app.db
+*.sqlite
+
+# EF Core migrations user artifacts
+migrations/
+
+# VS/VS Code/Cursor logs
+.vs/
+/.cursor/
+
+# NPM/Frontend
+node_modules/
+wwwroot/lib/
+
+# Logs
+*.log
+logs/
+
+# Build/publish outputs
+publish/
+*.Publish.xml
+
+# JetBrains Rider
+.idea/
+
+# Others
+.env
+.env.*
+
+# System
+*.bak
